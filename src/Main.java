@@ -14,7 +14,8 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         init();
 
-        System.out.println("wanna connect?(y/n)");
+
+        System.out.println("want to connect?(y/n)");
         String var = sc.nextLine();
         if(var.equals("y")){
             System.out.println("IP>>>");
