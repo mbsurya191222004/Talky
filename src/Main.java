@@ -32,12 +32,19 @@ public class Main {
             String ip = sc.nextLine();
             System.out.println("Port>>>");
             int port = sc.nextInt();
-            server.connect(ip,port);
+            if(server.connect(ip,port)){
+                String mesg=sc.nextLine();
+                server.write(mesg);
+            }
         }else {
             System.out.println("wanna let others connect?(y/n)");
             String temp1 = sc.nextLine();
             if (temp1.equals("y")) {
-                server.letConnect();
+                if(server.letConnect()){
+                    String mesg=server.read();
+                    System.out.println(mesg);
+                }
+
             }
         }
 

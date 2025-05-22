@@ -22,7 +22,7 @@ public class Server {
         }
     }
 
-    public void letConnect(){
+    public boolean letConnect(){
         try{
             System.out.println("listening for clients...");
             Socket client = this.Server.accept();
@@ -34,22 +34,42 @@ public class Server {
             this.in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
 
+            return true;
         } catch (IOException e) {
             System.out.println("error at Server letconnect");
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
-    public void connect(String ip,int port) {
+    public boolean connect(String ip,int port) {
 
         try(Socket socket= new Socket()){
             socket.connect(new InetSocketAddress(ip,port),1000);
             System.out.println("connected to : "+ socket.getRemoteSocketAddress() + " : " + socket.getLocalPort());
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            return true;
 
         } catch (IOException e) {
             System.out.println("error in  connect");
+            return false;
+        }
+    }
+
+    public void write(String message){
+        try{
+            this.out.write(message);
+        } catch (IOException e) {
+            System.out.println("error in write");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String read(){
+        try{
+            return this.in.readLine();
+        } catch (IOException e) {
+            System.out.println("error in read");
             throw new RuntimeException(e);
         }
     }
