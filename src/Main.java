@@ -5,6 +5,8 @@ import java.util.Scanner;
 import Connection.Server;
 
 
+
+
 public class Main {
 
 
@@ -30,27 +32,18 @@ public class Main {
             String ip = sc.nextLine();
             System.out.println("Port>>>");
             int port = sc.nextInt();
-            connect(ip,port);
-        }
-        System.out.println("wanna let others connect?(y/n)");
-        String temp1 = sc.nextLine();
-        if(temp1.equals("y")){
-            server.letConnect();
+            server.connect(ip,port);
+        }else {
+            System.out.println("wanna let others connect?(y/n)");
+            String temp1 = sc.nextLine();
+            if (temp1.equals("y")) {
+                server.letConnect();
+            }
         }
 
 //test me hu
 
     }
 
-    public static void connect(String ip,int port) {
 
-        try(Socket socket= new Socket()){
-            socket.connect(new InetSocketAddress(ip,port),1000);
-            System.out.println("connected to : "+ socket.getRemoteSocketAddress());
-
-        } catch (IOException e) {
-            System.out.println("error in  connect");
-            throw new RuntimeException(e);
-        }
-    }
 }
