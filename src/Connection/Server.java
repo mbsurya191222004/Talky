@@ -67,7 +67,9 @@ public class Server {
 
     public String read(){
         try{
-            return this.in.readLine();
+            String mesg= this.in.readLine();
+            System.out.println(mesg);
+            return mesg;
         } catch (IOException e) {
             System.out.println("error in read");
             throw new RuntimeException(e);
