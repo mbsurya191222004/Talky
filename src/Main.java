@@ -45,11 +45,10 @@ public class Main {
             String temp1 = sc.nextLine();
             if (temp1.equals("y")) {
                 if(server.letConnect()){
-                    while(true){
                         System.out.println("read....");
                         String mesg=server.read();
                         System.out.println(mesg);
-                    }
+
                 }
 
             }
