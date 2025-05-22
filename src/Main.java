@@ -35,7 +35,6 @@ public class Main {
         System.out.println("wanna let others connect?(y/n)");
         String temp1 = sc.nextLine();
         if(temp1.equals("y")){
-
             server.letConnect();
         }
 
@@ -47,7 +46,7 @@ public class Main {
 
         try(Socket socket= new Socket()){
             socket.connect(new InetSocketAddress(ip,port),1000);
-            System.out.println("connected to : "+ socket.getRemoteSocketAddress() + socket.getPort());
+            System.out.println("connected to : "+ socket.getRemoteSocketAddress());
 
         } catch (IOException e) {
             System.out.println("error in  connect");
