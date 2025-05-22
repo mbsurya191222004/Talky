@@ -3,6 +3,7 @@ import java.net.*;
 import java.util.Scanner;
 
 import Connection.Server;
+import static Connection.Server.connect;
 
 
 public class Main {
@@ -11,39 +12,34 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+
         init();
 
+
+
+    }
+
+    public static void init(){
+        Server server = new Server();
+        Scanner sc = new Scanner(System.in);
+
         System.out.println("wanna connect?(y/n)");
-        String var = sc.nextLine();
-        if(var.equals("y")){
+        String temp = sc.nextLine();
+        if(temp.equals("y")){
             System.out.println("IP>>>");
             String ip = sc.nextLine();
             System.out.println("Port>>>");
             int port = sc.nextInt();
             connect(ip,port);
         }
-
-
-    }
-
-    public static void init(){
-            Server server = new Server();
-            //server.letConnect();
-
-
-
-    }
-
-    public static void connect(String ip,int port) {
-
-        try(Socket socket= new Socket()){
-            socket.connect(new InetSocketAddress(ip,port),1000);
-            System.out.println("connected to : "+ socket.getRemoteSocketAddress() + socket.getPort());
-
-        } catch (IOException e) {
-            System.out.println("error in  connect");
-            throw new RuntimeException(e);
+        System.out.println("allow others to connect?(y/n)");
+        String temp2 = sc.nextLine();
+        if(temp2.equals("y")){
+            server.letConnect();
         }
+
+
     }
+
+
 }
