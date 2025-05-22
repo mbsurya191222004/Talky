@@ -33,16 +33,23 @@ public class Main {
             System.out.println("Port>>>");
             int port = sc.nextInt();
             if(server.connect(ip,port)){
-                String mesg=sc.nextLine();
-                server.write(mesg);
+                while(true){
+                    System.out.println("write....");
+                    String mesg=sc.nextLine();
+                    server.write(mesg);
+                    System.out.println(mesg);
+                }
             }
         }else {
             System.out.println("wanna let others connect?(y/n)");
             String temp1 = sc.nextLine();
             if (temp1.equals("y")) {
                 if(server.letConnect()){
-                    String mesg=server.read();
-                    System.out.println(mesg);
+                    while(true){
+                        System.out.println("read....");
+                        String mesg=server.read();
+                        System.out.println(mesg);
+                    }
                 }
 
             }
