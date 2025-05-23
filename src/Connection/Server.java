@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Server {
     int port;
     ServerSocket Server;
+    Socket socket;
     BufferedReader in;
     BufferedWriter out;
 
@@ -34,6 +35,13 @@ public class Server {
             this.in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
 
+            this.out.write("hello from server\n");
+            this.out.flush();
+
+            String msg = this.in.readLine();
+            System.out.println(msg);
+
+
             return true;
         } catch (IOException e) {
             System.out.println("error at Server letconnect");
@@ -43,11 +51,21 @@ public class Server {
 
     public boolean connect(String ip,int port) {
 
-        try(Socket socket= new Socket()){
-            socket.connect(new InetSocketAddress(ip,port),1000);
-            System.out.println("connected to : "+ socket.getRemoteSocketAddress() + " : " + socket.getLocalPort());
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        try{
+            this.socket= new Socket();
+            this.socket.connect(new InetSocketAddress(ip,port),1000);
+            System.out.println("connected to : "+ this.socket.getRemoteSocketAddress() + " : " + this.socket.getLocalPort());
+            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.out = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
+
+
+            this.out.write("hello from client\n");
+            this.out.flush();
+
+            String msg = this.in.readLine();
+            System.out.println(msg);
+
+
             return true;
 
         } catch (IOException e) {
@@ -59,6 +77,8 @@ public class Server {
     public void write(String message){
         try{
             this.out.write(message);
+            this.out.newLine();
+            this.out.flush();
         } catch (IOException e) {
             System.out.println("error in write");
             throw new RuntimeException(e);
@@ -68,7 +88,6 @@ public class Server {
     public String read(){
         try{
             String mesg= this.in.readLine();
-            System.out.println(mesg);
             return mesg;
         } catch (IOException e) {
             System.out.println("error in read");

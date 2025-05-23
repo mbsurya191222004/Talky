@@ -23,7 +23,11 @@ public class Main {
 
     public static void init(){
             Server server = new Server();
+            forConsoleInterface(server);
 
+    }
+
+    public static void forConsoleInterface(Server server){
         Scanner sc = new Scanner(System.in);
         System.out.println("wanna connect?(y/n)");
         String temp = sc.nextLine();
@@ -33,32 +37,42 @@ public class Main {
             System.out.println("Port>>>");
             int port = sc.nextInt();
             if(server.connect(ip,port)){
-                while(true){
-                    System.out.println("write....");
-                    String mesg=sc.nextLine();
-                    server.write(mesg);
-                    System.out.println(mesg);
-                }
+                System.out.println("NOW YOU CAN TEXT....");
+                readOnThread(server);
+                writeOnThread(sc,server);
+
+
             }
         }else {
             System.out.println("wanna let others connect?(y/n)");
             String temp1 = sc.nextLine();
             if (temp1.equals("y")) {
                 if(server.letConnect()){
-                        while (true){
-                            System.out.println("read....");
-                            String mesg=server.read();
-                            System.out.println(mesg);
-                        }
-
+                    System.out.println("NOW YOU CAN TEXT....");
+                    readOnThread(server);
+                    writeOnThread(sc,server);
                 }
 
             }
         }
-
-//test me hu
-
     }
 
+    public static void writeOnThread(Scanner sc , Server server){
+        new Thread(() -> {
+            while (true) {
 
+                String mesg = sc.nextLine();
+                server.write(mesg);
+            }
+        }).start();
+    }
+    public static void readOnThread(Server server){
+        new Thread(() -> {
+            while (true) {
+
+                String mesg = server.read();
+                System.out.println(mesg);
+            }
+        }).start();
+    }
 }
