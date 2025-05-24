@@ -7,6 +7,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Scanner;
@@ -17,11 +18,9 @@ public class ChatAppGUI extends JFrame {
 
     private JPanel initialPanel;
     private JButton hostButton, joinButton;
-
     private JPanel joinPanel;
     private JTextField ipField, portField;
     private JButton joinSubmitButton;
-
     private JPanel chatPanel;
     private JTextArea chatArea;
     private JTextField messageField;
@@ -46,11 +45,8 @@ public class ChatAppGUI extends JFrame {
         hostButton = new JButton("Host");
         joinButton = new JButton("Join");
         hostButton.addActionListener(e -> {
-            // You can replace this with your custom function to get IP and port
-            String ip = this.server.ip.getHostAddress(); // dummy function, implement your own
-            int port = this.server.port;         // example port
-
-
+            String ip = this.server.ip.getHostAddress();
+            int port = this.server.port;
             Thread hostPanel = new Thread(() -> {
                 JOptionPane.showMessageDialog(this, "Waiting for connection.....\n -->IP: " + ip +"\n"+ " -->Port: " + port);
             });
@@ -63,11 +59,8 @@ public class ChatAppGUI extends JFrame {
                 }
             }).start();
 
-            // Switch to chat screen
-
         });
         joinButton.addActionListener(e -> {
-            // Show join inputs panel instead of initial panel
             setContentPane(joinPanel);
             revalidate();
             repaint();
@@ -84,7 +77,7 @@ public class ChatAppGUI extends JFrame {
         joinPanel.add(ipField);
         joinPanel.add(new JLabel("Port:"));
         joinPanel.add(portField);
-        joinPanel.add(new JLabel()); // empty cell
+        joinPanel.add(new JLabel());
         joinPanel.add(joinSubmitButton);
         joinSubmitButton.addActionListener(e -> {
             String ip = ipField.getText().trim();
@@ -95,9 +88,7 @@ public class ChatAppGUI extends JFrame {
             }
             try {
                 int port = Integer.parseInt(portStr);
-                // Call your custom function for join with IP and port here
                 onJoin(ip, port);
-                // Switch to chat screen
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Port must be a number");
             }
@@ -125,7 +116,6 @@ public class ChatAppGUI extends JFrame {
         sendButton.addActionListener(e -> {
             String message = messageField.getText().trim();
             if (!message.isEmpty()) {
-                // Call your custom function to send message here
                 onSendMessage(message);
                 messageField.setText("");
             }
@@ -145,13 +135,9 @@ public class ChatAppGUI extends JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "CaN't connect");
         }
-        // Add your networking join logic here
     }
     private void onSendMessage(String message) {
-        System.out.println("Sending message: " + message);
-        // Add your send message logic here
         this.server.write(message);
-        // Also display the sent message in the chat area
         displayReceivedMessage("Me: " + message);
     }
     public void displayReceivedMessage(String message) {
@@ -159,19 +145,23 @@ public class ChatAppGUI extends JFrame {
     }
     public void readOnThread(Server server){
         new Thread(() -> {
-            while (true) {
-                String mesg = server.read();
-                displayReceivedMessage("PEER : " + mesg);
+            try{
+                while (true) {
+                    String mesg = server.read();
+                    displayReceivedMessage("PEER : " + mesg);
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this,"connection lost:");
+                setContentPane(initialPanel);
             }
         }).start();
     }
     public static void main(String[] args) {
-        //SwingUtilities.invokeLater(() -> {
-        //    ChatAppGUI gui = new ChatAppGUI();
-        //    gui.setVisible(true);
-        //});
+        SwingUtilities.invokeLater(() -> {
+            ChatAppGUI gui = new ChatAppGUI(new Server());
+           gui.setVisible(true);
+        });
     }
-
     //useless method from now on
     public static void writeOnThread(Server server, String mesg){
         new Thread(() -> {

@@ -66,9 +66,13 @@ public class Main {
     }
     public static void CONreadOnThread(Server server){
         new Thread(() -> {
-            while (true) {
-                String mesg = server.read();
-                System.out.println("PEER : "+ mesg);
+            try{
+                while (true) {
+                    String mesg = server.read();
+                    System.out.println("PEER : " + mesg);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }).start();
     }

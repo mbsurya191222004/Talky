@@ -86,14 +86,11 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-    public String read(){
-        try{
+    public String read() throws IOException{
+
             String mesg= this.in.readLine();
             return mesg;
-        } catch (IOException e) {
-            System.out.println("error in read");
-            throw new RuntimeException(e);
-        }
+
     }
 }
 
