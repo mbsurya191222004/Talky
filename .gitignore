@@ -34,3 +34,4 @@ bin/
 Talky.iml
 .bin/
 manifest.txt
+*.jar
