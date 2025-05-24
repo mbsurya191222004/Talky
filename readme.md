@@ -49,10 +49,3 @@
 
    *Note: Replace `Main` with the actual main class name if different.*
 
-## Usage
-
-1. Launch the application on two different machines or two instances on the same machine.
-2. One instance acts as the server, waiting for a connection.
-3. The other instance connects to the server using the server's IP address and designated port.
-4. Once connected, users can exchange messages in real-time.
-
