@@ -32,3 +32,5 @@ bin/
 .idea/
 .out/
 Talky.iml
+.bin/
+manifest.txt
