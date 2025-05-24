@@ -47,5 +47,4 @@
    java -cp bin Main
    ```
 
-   *Note: Replace `Main` with the actual main class name if different.*
 
