@@ -1,10 +1,10 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
-
+import GUI.ChatAppGUI;
 import Connection.Server;
 
-
+import javax.swing.*;
 
 
 public class Main {
@@ -13,18 +13,16 @@ public class Main {
 
 
     public static void main(String[] args) {
-
         init();
-
-
-
 
     }
 
     public static void init(){
             Server server = new Server();
-            forConsoleInterface(server);
-
+            SwingUtilities.invokeLater(() -> {
+                ChatAppGUI gui = new ChatAppGUI(server);
+                gui.setVisible(true);
+            });
     }
 
     public static void forConsoleInterface(Server server){
@@ -38,8 +36,8 @@ public class Main {
             int port = sc.nextInt();
             if(server.connect(ip,port)){
                 System.out.println("NOW YOU CAN TEXT....");
-                readOnThread(server);
-                writeOnThread(sc,server);
+                CONreadOnThread(server);
+                CONwriteOnThread(sc,server);
 
 
             }
@@ -49,30 +47,30 @@ public class Main {
             if (temp1.equals("y")) {
                 if(server.letConnect()){
                     System.out.println("NOW YOU CAN TEXT....");
-                    readOnThread(server);
-                    writeOnThread(sc,server);
+                    CONreadOnThread(server);
+                    CONwriteOnThread(sc,server);
                 }
 
             }
         }
     }
-
-    public static void writeOnThread(Scanner sc , Server server){
+    public static void CONwriteOnThread(Scanner sc ,Server server){
         new Thread(() -> {
             while (true) {
-
                 String mesg = sc.nextLine();
+                System.out.println("ME : "+ mesg);
                 server.write(mesg);
+
             }
         }).start();
     }
-    public static void readOnThread(Server server){
+    public static void CONreadOnThread(Server server){
         new Thread(() -> {
             while (true) {
-
                 String mesg = server.read();
-                System.out.println(mesg);
+                System.out.println("PEER : "+ mesg);
             }
         }).start();
     }
+
 }

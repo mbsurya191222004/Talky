@@ -4,7 +4,6 @@ import javax.swing.*;
 
 public class GUIfile {
 
-
     public static void main(String[] args) {
         int width=600,height=800;
 

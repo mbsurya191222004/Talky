@@ -6,8 +6,9 @@ import java.net.*;
 import java.util.Scanner;
 
 public class Server {
-    int port;
-    ServerSocket Server;
+    public int port;
+    public InetAddress ip;
+    public ServerSocket Server;
     Socket socket;
     BufferedReader in;
     BufferedWriter out;
@@ -15,6 +16,10 @@ public class Server {
     public Server(){
         try{
             this.Server = new ServerSocket(0);
+            this.ip = this.Server.getInetAddress();
+            if(ip.isAnyLocalAddress()){
+                this.ip = InetAddress.getLocalHost();
+            }
             this.port= Server.getLocalPort();
             System.out.println("Server started : " + this.port);
         } catch (IOException e) {
@@ -22,7 +27,6 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-
     public boolean letConnect(){
         try{
             System.out.println("listening for clients...");
@@ -48,7 +52,6 @@ public class Server {
             return false;
         }
     }
-
     public boolean connect(String ip,int port) {
 
         try{
@@ -73,7 +76,6 @@ public class Server {
             return false;
         }
     }
-
     public void write(String message){
         try{
             this.out.write(message);
@@ -84,7 +86,6 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-
     public String read(){
         try{
             String mesg= this.in.readLine();
