@@ -56,7 +56,7 @@ public class Server {
 
         try{
             this.socket= new Socket();
-            this.socket.connect(new InetSocketAddress(ip,port),1000);
+            this.socket.connect(new InetSocketAddress(ip,port),6000);
             System.out.println("connected to : "+ this.socket.getRemoteSocketAddress() + " : " + this.socket.getLocalPort());
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));

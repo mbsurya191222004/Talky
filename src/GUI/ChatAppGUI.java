@@ -26,7 +26,8 @@ public class ChatAppGUI extends JFrame {
     private JTextField messageField;
     private JButton sendButton;
 
-    public ChatAppGUI(Server server) {
+    public
+    ChatAppGUI(Server server) {
         this.server=server;
         setTitle("Chat App");
         setSize(400, 300);
