@@ -1,5 +1,3 @@
-# Team- VoidMain
-
 # Talky
 
 **Talky** is a peer-to-peer (P2P) chat application built in Java using Swing for the graphical user interface and Java's networking libraries for communication. It facilitates real-time text messaging between two users over a network.
